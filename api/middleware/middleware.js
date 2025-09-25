@@ -4,7 +4,7 @@ function logger(req, res, next) {
   // DO YOUR MAGIC
   const timestamp = new Date ().toLocaleString()
   const method = req.method
-  const url = req.orginalUrl
+  const url = req.originalUrl
   console.log(`[${timestamp}] ${method} to ${url}`)
   next()
 }
@@ -30,8 +30,16 @@ function logger(req, res, next) {
 
 function validateUser(req, res, next) {
   // DO YOUR MAGIC
-  console.log('validateUser middleware')
-  next()
+  const {name} =req.body
+  if (!name || !name.trim()) {
+    res.status(400).json ({
+      message:'missing required name field'
+    })
+  } else {
+    req.name = name.trim()
+    next()
+
+  }
 }
 
 function validatePost(req, res, next) {
